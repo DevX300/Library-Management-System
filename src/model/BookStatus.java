@@ -1,5 +1,6 @@
 package model;
 
-public class BookStatus {
-    
+public enum BookStatus {
+    AVAILABLE,
+    BORROWED
 }

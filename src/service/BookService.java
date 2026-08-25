@@ -4,6 +4,7 @@ import model.Book;
 import util.*;
 import repository.BookRepository;
 import exception.*;
+import java.util.Scanner;
 public class BookService {
     
     public static void addBook(String bookTitle, String bookAuthor,String bookCategory) {
@@ -16,7 +17,7 @@ public class BookService {
         BookRepository.bookData.add(newbook);
         
         //save the new book data
-        FileManager.saveBookFile();
+        BookRepository.saveBookFile();
         System.out.println("Book added successfully with ID: " + newbook.getBookID());
 
     }
@@ -33,9 +34,7 @@ public class BookService {
                 deleteID = book;
                 BookRepository.bookData.remove(deleteID);
                 System.out.println("Book removed successfully with ID: " + bookID);
-                // notFound = false;
-                //save the new book data
-                FileManager.saveBookFile();
+                BookRepository.saveBookFile();
                 listBook();
                 return;
             }
@@ -66,7 +65,7 @@ public class BookService {
                 throw new BookNotFoundException("No books available in the library.");
             }
             for(Book book : BookRepository.bookData){
-                System.out.println("ID: " + book.getBookID() + ", Title: " + book.getBookTitle() + ", Author: " + book.getBookAuthor() + ", Category: " + book.getBookCategory() + ", Status: " + book.getBookStatus());
+                showBooks(book);
             }
         }
         catch(BookNotFoundException e){
@@ -74,18 +73,24 @@ public class BookService {
         }
     }
 
-    public static void searchBook(int searchFilter, String searchValue){
+    public static void searchBook(int searchFilter){
+        String searchValue;
+        @SuppressWarnings("resource")
+        Scanner input = new Scanner(System.in);
         switch(searchFilter){
             case 1:
-                System.out.println("Search by Title");
+                System.out.print("Search by Title:");
+                searchValue = input.nextLine();
                 searchBookbyTitle(searchValue);
                 break;
             case 2:
-                System.out.println("Search by Author");
+                System.out.print("Search by Author:");
+                searchValue = input.nextLine();
                 searchBookbyAuthor(searchValue);
                 break;
             case 3:
-                System.out.println("Search by Category");
+                System.out.print("Search by Category:");
+                searchValue = input.nextLine();
                 searchBookbyCategory(searchValue);
                 break;
             case 4:
@@ -101,38 +106,61 @@ public class BookService {
         }
     }
 
-    public static void searchBookbyTitle(String bookTitle){
+    public static void searchBookbyTitle(String searchValue){
         try{
             if(BookRepository.bookData.isEmpty()){
                 throw new BookNotFoundException("No books available in the library.");
             }
-            for(Book book : BookRepository.bookData){
+            System.out.println("searchnamemethod==" + searchValue);
 
-                if(book.getBookTitle().equalsIgnoreCase(bookTitle)){
-                    System.out.println("ID: " + book.getBookID() + ", Title: " + book.getBookTitle() + ", Author: " + book.getBookAuthor() + ", Category: " + book.getBookCategory() + ", Status: " + book.getBookStatus());
-                }
+            BookRepository.bookData
+            .stream()
+            .filter(book -> book.getBookTitle().toLowerCase().contains(searchValue.toLowerCase()))
+            .forEach(book ->showBooks(book));
+        }
+        catch(BookNotFoundException e){
+            System.out.println("Search Error: " + e.getMessage());
+        }
+    }
+    public static void searchBookbyAuthor(String searchValue){
+        try{
+            if(BookRepository.bookData.isEmpty()){
+                throw new BookNotFoundException("No books available in the library.");
             }
+            BookRepository.bookData
+            .stream()
+            .filter(book -> book.getBookAuthor().toLowerCase().contains(searchValue.toLowerCase()))
+            .forEach(book ->showBooks(book));
         }
         catch(BookNotFoundException e){
             System.out.println(e.getMessage());
         }
     }
-    public static void searchBookbyAuthor(String bookAuthor){
-        
-    }
-    public static void searchBookbyCategory(String bookCategory){
-        
+    public static void searchBookbyCategory(String searchValue){
+        try{
+            if(BookRepository.bookData.isEmpty()){
+                throw new BookNotFoundException("No books available in the library.");
+            }
+            BookRepository.bookData
+            .stream()
+            .filter
+            (book -> book.getBookCategory().toLowerCase().contains(searchValue.toLowerCase()))
+            .forEach
+            (book ->showBooks(book));
+        }
+        catch(BookNotFoundException e){
+            System.out.println(e.getMessage());
+        }
     }
     public static void searchAvailableBook(){
         try{
             if(BookRepository.bookData.isEmpty()){
                 throw new BookNotFoundException("No books available in the library.");
             }
-            for(Book book : BookRepository.bookData){
-                if(book.getBookStatus() == model.BookStatus.AVAILABLE){
-                    System.out.println("ID: " + book.getBookID() + ", Title: " + book.getBookTitle() + ", Author: " + book.getBookAuthor() + ", Category: " + book.getBookCategory() + ", Status: " + book.getBookStatus());
-                }
-            }
+            BookRepository.bookData
+            .stream()
+            .filter(book -> book.getBookStatus() == model.BookStatus.AVAILABLE)
+            .forEach(book -> showBooks(book));
         }
         catch(BookNotFoundException e){
             System.out.println(e.getMessage());
@@ -143,15 +171,18 @@ public class BookService {
             if(BookRepository.bookData.isEmpty()){
                 throw new BookNotFoundException("No books available in the library.");
             }
-            for(Book book : BookRepository.bookData){
-                if(book.getBookStatus() == model.BookStatus.BORROWED){
-                    System.out.println("ID: " + book.getBookID() + ", Title: " + book.getBookTitle() + ", Author: " + book.getBookAuthor() + ", Category: " + book.getBookCategory() + ", Status: " + book.getBookStatus());
-                }
-            }
+            BookRepository.bookData
+            .stream()
+            .filter(book -> book.getBookStatus() == model.BookStatus.BORROWED)
+            .forEach(book -> showBooks(book));  
         }
         catch(BookNotFoundException e){
             System.out.println(e.getMessage());
         }
     }
 
+
+    public static void showBooks(Book book){
+        System.out.println("[ ID: " + book.getBookID() + " | Title: " + book.getBookTitle() + " | Author: " + book.getBookAuthor() + " | Category: " + book.getBookCategory() + " | Status: " + book.getBookStatus()+" ]");
+    }
 }

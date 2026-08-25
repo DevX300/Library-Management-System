@@ -1,29 +1,48 @@
 import service.*;
-import util.*;
+// import util.*;
 import java.util.Scanner;
+
+import repository.BookRepository;
 
 
 
 public class App {
     public static void main(String[] args) {
         try {
-            FileManager.loadBookFile();
+            BookRepository.loadBookFile();
         } catch (Exception e) {
             System.out.println("Error loading book file: " + e.getMessage());
         }
-        Scanner input = new Scanner(System.in);        
-        
-        System.out.println("Welcome to the Library Management System!");
-        
+        System.out.println("===============================================================");
+        System.out.println(":                   Library Management System                 :");
+        System.out.println("===============================================================");
+        int choice;
         while (true){
-            System.out.println("\nPlease select an option:");
-            System.out.println("1. Add a book");
-            System.out.println("2. Remove a book by ID");
-            System.out.println("3. List books");
-            System.out.println("4. Search books");
+            Scanner input = new Scanner(System.in);        
+            System.out.println
+                                ("Please select an option:\n"+
+                                "1. Add a book\n"+
+                                "2. Remove a book by ID\n"+
+                                "3. List books\n"+
+                                "4. Search books\n"+
+                                "5. Add Member\n"+
+                                "6. List Members\n"+
+                                "7. Borrow Book\n"+
+                                "8. Return Book\n"+
+                                "9. Transaction History\n"+ 
+                                "10.Save Data\n"+
+                                "11.Load Data"+
+                                "\n0. Exit");
 
             System.out.print("Enter your choice: ");
-            int choice = input.nextInt();
+            try {
+                choice = input.nextInt();
+            } catch (Exception e) {
+                System.out.println("Invalid input. Please enter a number.");
+                input.nextInt(); 
+                continue; 
+            }
+            // choice = input.nextInt();
             switch (choice){
                 case 1:
                     // Add a book
@@ -63,7 +82,7 @@ public class App {
                     break;
                 case 4:
                     // Search books
-                    System.out.println("Search Books by: ");
+                    System.out.println("\nSearch Books by: ");
                     System.out.println("1. Title");
                     System.out.println("2. Author");
                     System.out.println("3. Category");
@@ -71,14 +90,12 @@ public class App {
                     System.out.println("5. Borrowed Books");
                     System.out.print("Enter your choice: ");
                     int searchChoice = input.nextInt();
-                    input.nextLine();
+                    // input.nextLine();
                     if(searchChoice == 4 || searchChoice == 5){
-                        BookService.searchBook(searchChoice, null);
+                        BookService.searchBook(searchChoice);
                         break;
                     }
-                    System.out.print("Enter search value: ");
-                    String searchValue = input.nextLine();
-                    BookService.searchBook(searchChoice, searchValue);
+                    BookService.searchBook(searchChoice);
                     break;  
                 case 0:
                     // Exit

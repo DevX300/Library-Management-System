@@ -4,3 +4,4 @@ ID,  TITLE,      AUTHOR,    CATEGORY,   STATUS
 3,The Hobbit,J.R.R. Tolkien,Fantasy,AVAILABLE
 4,The Hobbit2,Tolkein, Fantasy,AVAILABLE
 5,Harry Porter,JK Rowling,fantasy,AVAILABLE
+6,Python master,Washeed Dev,programming,AVAILABLE

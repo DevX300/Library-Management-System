@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 import model.Transaction;
 import model.TransactionType;
 import util.FileManager;
@@ -28,7 +29,16 @@ public class TransactionRepository {
                     int booksID = Integer.parseInt(lineParts[1]);
                     int membersID = Integer.parseInt(lineParts[2]);
                     LocalDate borrowDate = LocalDate.parse(lineParts[3]);
-                    LocalDate returnDate = LocalDate.parse(lineParts[4]);
+
+                    // LocalDate returnDate = LocalDate.parse(lineParts[4]);
+                    
+                    LocalDate returnDate = null;
+                    if (!lineParts[4].equals("NONE") && !lineParts[4].isBlank()) {
+                        returnDate = LocalDate.parse(lineParts[4]);
+                    }
+                    
+                    
+                    
                     TransactionType transactionType = TransactionType.valueOf(lineParts[5]);
                     int lateFee = Integer.parseInt(lineParts[6]) ;
     
@@ -47,11 +57,12 @@ public class TransactionRepository {
      public static void saveTransactionFile() {
         FileManager.initializeDirectory();
         //save transaction attributes
-        try(BufferedWriter updateFile = Files.newBufferedWriter(FileManager.initializeMemberFile())) {
+        try(BufferedWriter updateFile = Files.newBufferedWriter(FileManager.initializeTransactionFile())) {
             updateFile.write("ID BOOK MEMBER  BORROW_DATE  RETURN_DATE  TYPE  LATE_FEE");
             updateFile.newLine();
             for (Transaction transaction : transactionData) {
-                String line = String.valueOf(transaction.getTransactionID())+"|"+transaction.getBookID()+"|"+transaction.getMemberID()+"|"+transaction.getBorrowDate().toString()+"|"+transaction.getReturnDate().toString()+"|"+transaction.getTransactionType().toString()+"|"+transaction.getLateFee();
+                String returnDateString = (transaction.getReturnDate() == null) ? "NONE" : transaction.getReturnDate().toString();
+                String line = String.valueOf(transaction.getTransactionID())+"|"+transaction.getBookID()+"|"+transaction.getMemberID()+"|"+transaction.getBorrowDate().toString()+"|"+returnDateString+"|"+transaction.getTransactionType().toString()+"|"+transaction.getLateFee();
                 updateFile.write(line);
                 updateFile.newLine();
             } 
@@ -62,3 +73,9 @@ public class TransactionRepository {
     }
 
 }
+
+// String returnDateString = (returnDate == null) ? "NONE" : returnDate.toString();
+// writer.write(returnDateString);
+
+// String returnDateString = lineParts[4];
+// LocalDate returnDate = "NONE".equals(returnDateString) ? null : LocalDate.parse(returnDateString);

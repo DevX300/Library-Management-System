@@ -1,5 +1,7 @@
 package model;
 
+import java.time.LocalDate;
+
 import exception.BorrowLimitExceededException;
 
 public abstract class Member {
@@ -7,6 +9,8 @@ public abstract class Member {
     private String memberName;
     private String memberEmail;
     private memberTYPE memberType;
+    
+    private int count=0;
 
 
     public Member(int memberID, 
@@ -21,7 +25,9 @@ public abstract class Member {
     }
 
     public abstract String showborrowedBooksStatus();
-    public abstract void setBorrowBooksCount() throws BorrowLimitExceededException;
+    public abstract void setBorrowedBooks(int bookId, LocalDate borrowDate) throws BorrowLimitExceededException;
+    public abstract LocalDate getBorrowDate(int bookID);
+    public abstract void setReturnBooks(int bookID);
     // Setters
     public void setMemberID(int memberID) {
         this.memberID = memberID;
@@ -39,6 +45,10 @@ public abstract class Member {
         this.memberType = memberTYPE.valueOf(memberType);
     }
 
+    public void setCount(int count){
+        this.count=count;
+    }
+    
     // Getters
     public int getMemberID() {
         return memberID;
@@ -54,5 +64,9 @@ public abstract class Member {
 
     public memberTYPE getMemberType() {
         return memberType;
+    }
+
+    public int getCount(){
+        return count;
     }
 }

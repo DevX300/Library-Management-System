@@ -13,12 +13,18 @@ public class MemberService {
         Idgenerator idGenerator = new Idgenerator();
         int memberID = idGenerator.generateMemberID();
         
-        String memberType="1";
-        if(memberTypeInitialize==1) memberType=memberTYPE.STUDENT.toString();
-        if(memberTypeInitialize==2) memberType=memberTYPE.TEACHER.toString();
+        String memberType=null;
+        if(memberTypeInitialize==1){
+            memberType=memberTYPE.STUDENT.toString();
+            MemberRepository.memberData.add(new StudentMember(memberID, memberName, memberEmail, memberType));
+        } 
+        
+        if(memberTypeInitialize==2){
+            memberType=memberTYPE.TEACHER.toString();
+            MemberRepository.memberData.add(new TeacherMember(memberID, memberName, memberEmail, memberType));
+        } 
         
         // Save the book to the repository
-        MemberRepository.memberData.add(new StudentMember(memberID, memberName, memberEmail, memberType));
         
         //save the new member data
         MemberRepository.saveMemberFile();

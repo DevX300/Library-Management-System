@@ -1,4 +1,2 @@
 ID  |  TITLE   |   AUTHOR   |   CATEGORY   |  STATUS
-1|Clean Code|Robert Martin|Programming|AVAILABLE
-2|Effective Java|Joshua Bloch|Programming|AVAILABLE
-3|The Hobbit|J.R.R Tolkien|Fantasy|AVAILABLE
+1|Clean Code|Martin|Programming|BORROWED

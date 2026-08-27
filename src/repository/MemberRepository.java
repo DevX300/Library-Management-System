@@ -16,6 +16,7 @@ import util.FileManager;
 public class MemberRepository {
     public static ArrayList<Member> memberData = new ArrayList<>();
     public static boolean count = true;
+
      public static void loadMemberFile() throws MemberNotFoundException {
         FileManager.initializeDirectory();
 
@@ -43,7 +44,6 @@ public class MemberRepository {
                     Member Teachermemberdata = new TeacherMember(Integer.parseInt(memberID), memberName, memberEmail, memberType);
                     memberData.add(Teachermemberdata);
                 }
-                
             }
         } 
         catch (IOException e) {
@@ -63,7 +63,7 @@ public class MemberRepository {
             updateFile.write("ID  NAME     EMAIL                TYPE    BORROW_STATUS");
             updateFile.newLine();
             for (Member member : memberData) {
-                String line = String.valueOf(member.getMemberID())+"|"+member.getMemberName()+"|"+member.getMemberEmail()+"|"+member.getMemberType().toString();
+                String line = String.valueOf(member.getMemberID())+"|"+member.getMemberName()+"|"+member.getMemberEmail()+"|"+member.getMemberType().toString()+"|"+member.showborrowedBooksStatus();
                 updateFile.write(line);
                 updateFile.newLine();
             } 

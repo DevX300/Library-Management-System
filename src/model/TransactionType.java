@@ -1,5 +1,6 @@
 package model;
 
-public class TransactionType {
-    
+public enum TransactionType {
+    BORROW,
+    RETURN
 }

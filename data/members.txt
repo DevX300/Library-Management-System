@@ -1,0 +1,4 @@
+ID  NAME     EMAIL                TYPE    BORROW_STATUS
+1|Tabeeb|tabeeb.teacher@mail.com|TEACHER
+2|Mahee|mahee.student@mail.com|STUDENT
+3|Red|red.teacher@mail.com|TEACHER

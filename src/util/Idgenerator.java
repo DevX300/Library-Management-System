@@ -3,22 +3,35 @@ package util;
 // import java.nio.file.*;
 // import java.util.*;
 // import exception.BookNotFoundException;
-import repository.BookRepository;
+import repository.*;
+import service.Library;
 
 public class Idgenerator {
     
     //BookID generator
-    public static int generateNewBookID=0;
+    public static int generateNewBookID=1;
     public int generateBookID() {
-        // try {
-        //     // FileManager.loadBookFile();
-        // } catch (BookNotFoundException e) {
-        //     System.out.println("Book not found: " + e.getMessage());
-        // }
-        generateNewBookID = BookRepository.bookData.getLast().getBookID() + 1;
+        if (!Library.bookData.isEmpty()) {
+            generateNewBookID = Library.bookData.getLast().getBookID() + 1;
+        }
         return generateNewBookID;
     }
+    
+    // MemberID generator
+    public static int generateNewMemberID=1;
+    public int generateMemberID() {
+        if (!MemberRepository.memberData.isEmpty()) {
+            generateNewMemberID = MemberRepository.memberData.getLast().getMemberID() + 1;
+        }
+        return generateNewMemberID;
+    }
 
-
-    //MemberID generator
+    public static int generateNewTransactionID=1;
+    public int generateTransactionID() {
+        if (!TransactionRepository.transactionData.isEmpty()) {
+            generateNewMemberID = TransactionRepository.transactionData.getLast().getTransactionID() + 1;
+        }
+        return generateNewMemberID;
+    }
+    
 }

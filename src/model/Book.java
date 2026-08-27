@@ -50,4 +50,8 @@ public class Book {
     public BookStatus getBookStatus() {
         return bookStatus;
     }
+    //testing
+    public void showBookData(Book book){
+        System.out.println("[ ID: " + book.getBookID() + " | Title: " + book.getBookTitle() + " | Author: " + book.getBookAuthor() + " | Category: " + book.getBookCategory() + " | Status: " + book.getBookStatus()+" ]");
+    }
 }

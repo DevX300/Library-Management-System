@@ -1,17 +1,14 @@
 import service.*;
-// import util.*;
 import java.util.Scanner;
-
-import repository.BookRepository;
-
-
+import repository.*;
 
 public class App {
     public static void main(String[] args) {
         try {
             BookRepository.loadBookFile();
+            MemberRepository.loadMemberFile();
         } catch (Exception e) {
-            System.out.println("Error loading book file: " + e.getMessage());
+            // System.out.println("Error loading book file: " + e.getMessage());
         }
         System.out.println("===============================================================");
         System.out.println(":                   Library Management System                 :");
@@ -42,7 +39,6 @@ public class App {
                 input.nextInt(); 
                 continue; 
             }
-            // choice = input.nextInt();
             switch (choice){
                 case 1:
                     // Add a book
@@ -96,7 +92,60 @@ public class App {
                         break;
                     }
                     BookService.searchBook(searchChoice);
-                    break;  
+                    break; 
+                case 5:
+                    System.out.print("Enter Member Name: ");
+                    input.nextLine();
+                    String memberName = input.nextLine();
+                    System.out.print("Enter Email: ");
+                    String memberEmail = input.nextLine();
+
+                    System.out.println("1. Student Member");
+                    System.out.println("2. Teacher Member");
+                    System.out.print("Choose MemberType: ");
+                    // validate member input
+                    
+                    int memberType = input.nextInt();
+                    if(memberType==1||memberType==2){
+                        if (memberType==1)  System.out.println("Adding new Student: " + memberName + ", Email: " + memberEmail);
+                        if (memberType==2)  System.out.println("Adding new Teacher: " + memberName + ", Email: " + memberEmail);
+                        MemberService.addMember(memberName, memberEmail, memberType);
+                        break;
+                    }
+                    else{
+                        System.out.println("Choose valid memberType");
+                        break;
+                    }
+                    // input.next();
+                    // break;
+                case 6:
+                    try{
+                        MemberService.listMembers();
+                    }
+                    catch(Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                    break;
+                case 7:
+
+                    break;
+                case 8:
+
+                    break;
+                case 9:
+
+                    break;
+                case 10:
+                    BookRepository.saveBookFile();
+                    break;
+                case 11:
+                    try {
+                        BookRepository.loadBookFile();
+                        MemberRepository.loadMemberFile();
+                    } catch (Exception e) {
+                        System.out.println("Failed to load data.");
+                    }
+                    break;
                 case 0:
                     // Exit
                     System.out.println("App Closed Successfully");
@@ -107,7 +156,5 @@ public class App {
                     System.out.println("Invalid choice. Please try again.");
             }
         }
-        // input.Close();
-
     }
 }

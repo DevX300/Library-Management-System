@@ -15,7 +15,7 @@ public class App {
             MemberRepository.loadMemberFile();
             TransactionRepository.loadTransactionFile();
         } catch (Exception e) {
-            // System.out.println("Error loading book file: " + e.getMessage());
+            System.out.println("Error loading book file: " + e.getMessage());
         }
         System.out.println("===============================================================");
         System.out.println(":                   Library Management System                 :");
@@ -101,7 +101,7 @@ public class App {
                     BookService.searchBook(searchChoice);
                     break; 
                 case 5:
-                    System.out.print("Enter Member Name: ");
+                    System.out.print("Enter Your Name: ");
                     input.nextLine();
                     String memberName = input.nextLine();
                     System.out.print("Enter Email: ");
@@ -137,7 +137,7 @@ public class App {
                     System.out.print("Enter Book Id: ");
                     input.nextLine();
                     int BookID = input.nextInt();
-                    System.out.print("Enter Member Id: ");
+                    System.out.print("Enter your Member Id: ");
                     int memberID = input.nextInt();
                     try {
                         Library.borrowBooks(BookID, memberID);
@@ -151,7 +151,7 @@ public class App {
                     System.out.print("Enter Book Id: ");
                     input.nextLine();
                     int returnBookID = input.nextInt();
-                    System.out.print("Enter Member Id: ");
+                    System.out.print("Enter your Member Id: ");
                     int returnMemberID = input.nextInt();
                     try {
                         Library.returnBooks(returnBookID, returnMemberID);
@@ -165,11 +165,14 @@ public class App {
                     break;
                 case 10:
                     BookRepository.saveBookFile();
+                    MemberRepository.saveMemberFile();
+                    TransactionRepository.saveTransactionFile();
                     break;
                 case 11:
                     try {
                         BookRepository.loadBookFile();
                         MemberRepository.loadMemberFile();
+                        TransactionRepository.loadTransactionFile();
                     } catch (Exception e) {
                         System.out.println("Failed to load data.");
                     }

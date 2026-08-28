@@ -11,7 +11,7 @@ public class TeacherMember extends Member{
     private static LocalDate[] TEACHERBORROWEDBOOKSDATE = new LocalDate[10];
 
     public LocalDate getBorrowDate(int bookID){
-        LocalDate borrrowedBookIndex = null;
+        LocalDate borrrowedBookIndex =null;
         for (int i = 0; i < TEACHERBORROWEDBOOKSID.length; i++) {
             if (TEACHERBORROWEDBOOKSID[i]==bookID) {
                 borrrowedBookIndex= TEACHERBORROWEDBOOKSDATE[i];

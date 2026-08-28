@@ -46,6 +46,6 @@ public class MemberService {
     }
 
     public static void showMembers(Member member){
-        System.out.println("[ ID: " + member.getMemberID() + " | Name: " + member.getMemberName() + " | Email: " + member.getMemberEmail() + " | Type: " + member.getMemberType()+" ]");
+        System.out.println("[ ID: " + member.getMemberID() + " | Name: " + member.getMemberName() + " | Email: " + member.getMemberEmail() + " | Type: " + member.getMemberType()+" |"+member.showborrowedBooksStatus()+ " ]");
     }
 }

@@ -1,8 +1,5 @@
 package util;
-// import java.io.*;
-// import java.nio.file.*;
-// import java.util.*;
-// import exception.BookNotFoundException;
+
 import repository.*;
 import service.Library;
 
@@ -29,9 +26,9 @@ public class Idgenerator {
     public static int generateNewTransactionID=1;
     public int generateTransactionID() {
         if (!TransactionRepository.transactionData.isEmpty()) {
-            generateNewMemberID = TransactionRepository.transactionData.getLast().getTransactionID() + 1;
+            generateNewTransactionID = TransactionRepository.transactionData.getLast().getTransactionID() + 1;
         }
-        return generateNewMemberID;
+        return generateNewTransactionID;
     }
     
 }

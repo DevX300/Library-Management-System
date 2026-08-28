@@ -1,2 +1,2 @@
 ID  |  TITLE   |   AUTHOR   |   CATEGORY   |  STATUS
-1|Clean Code|Martin|Programming|BORROWED
+1|Clean Code|Martin|Programming|AVAILABLE

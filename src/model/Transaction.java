@@ -7,7 +7,6 @@ public class Transaction {
     private int bookID;
     private int memberID;
     private LocalDate borrowDate;
-    // private LocalDate returnDate;
     private LocalDate returnDate;
     private TransactionType transactionType;
     private int lateFee;

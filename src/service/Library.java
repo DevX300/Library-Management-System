@@ -84,7 +84,8 @@ public class Library {
                                                         }
                                                 }
                                                 //adds a new transaction
-                                                Transaction bookBorrowTransaction = new Transaction(Idgenerator.generateNewTransactionID, bookId, memberId, borrowDate, null, TransactionType.BORROW, 0);
+                                                Idgenerator generateID = new Idgenerator();
+                                                Transaction bookBorrowTransaction = new Transaction(generateID.generateTransactionID(), bookId, memberId, borrowDate, null, TransactionType.BORROW, 0);
                                                 TransactionRepository.transactionData.add(bookBorrowTransaction);
                                                 BookRepository.saveBookFile();
                                                 MemberRepository.saveMemberFile();
@@ -113,7 +114,6 @@ public class Library {
                         System.out.println(e.getMessage());
                 }
         }
-
 
         public static int getLateFee(LocalDate borrowDate, LocalDate returnDate, memberTYPE memberType){
                 int studentBorrowPeriod= StudentMember.STUDENTBORROWBOOKPERIOD;
@@ -175,21 +175,27 @@ public class Library {
                                 for (Book book : bookData) {
                                         if (book.getBookID()==bookId) {
                                                 LocalDate returnDate = LocalDate.now();
+                                                LocalDate borrowDate = null;
                                                 book.setBookStatus(BookStatus.AVAILABLE.toString());
                                                 for (Member member : MemberRepository.memberData) {
                                                         if (member.getMemberID()==memberId) {
+                                                                borrowDate =  member.getBorrowDate(bookId);
                                                                 member.setReturnBooks(bookId);
+                                                                System.out.println(borrowDate);
+                                                                Idgenerator generateID = new Idgenerator();
+                                                                
                                                                 Transaction bookReturnTransaction = new Transaction(
-                                                                        Idgenerator.generateNewTransactionID,
+                                                                        generateID.generateTransactionID(),
                                                                          bookId,
                                                                           memberId,
-                                                                           member.getBorrowDate(bookId),
+                                                                           borrowDate,
                                                                             returnDate,
-                                                                             TransactionType.BORROW,
-                                                                              getLateFee(member.getBorrowDate(bookId),returnDate, member.getMemberType()));
+                                                                             TransactionType.RETURN,
+                                                                              getLateFee(borrowDate,returnDate, member.getMemberType()));
                                                                 TransactionRepository.transactionData.add(bookReturnTransaction);
                                                         }
                                                 }
+                                                //Save Files
                                                 BookRepository.saveBookFile();
                                                 MemberRepository.saveMemberFile();
                                                 TransactionRepository.saveTransactionFile();
@@ -198,7 +204,7 @@ public class Library {
                                                 System.out.println("Return Date: " + returnDate );
                                                 for (Member member : MemberRepository.memberData) {
                                                         if (member.getMemberID()==memberId) {
-                                                                        System.out.println("Borrow date: " + member.getBorrowDate(bookId));
+                                                                        System.out.println("Borrow date: " + borrowDate);
                                                         }
                                                 }
                                         }

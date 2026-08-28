@@ -35,7 +35,6 @@ public class MemberRepository {
                 String memberName = lineParts[1];
                 String memberEmail = lineParts[2];
                 String memberType = lineParts[3];
-
                 if (memberType.equals(memberTYPE.STUDENT.toString())) {
                     Member Studentmemberdata = new StudentMember(Integer.parseInt(memberID), memberName, memberEmail, memberType);
                     memberData.add(Studentmemberdata);

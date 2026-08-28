@@ -73,10 +73,8 @@ public class BookService {
         }
     }
 
-    public static void searchBook(int searchFilter){
+    public static void searchBook(int searchFilter, Scanner input){
         String searchValue;
-        @SuppressWarnings("resource")
-        Scanner input = new Scanner(System.in);
         switch(searchFilter){
             case 1:
                 System.out.print("Search by Title:");

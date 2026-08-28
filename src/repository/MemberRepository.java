@@ -35,12 +35,16 @@ public class MemberRepository {
                 String memberName = lineParts[1];
                 String memberEmail = lineParts[2];
                 String memberType = lineParts[3];
+                String[] borrowInfo = lineParts[4].split("/");
+                int borrowedCount = Integer.parseInt(borrowInfo[0]);
+
+                
                 if (memberType.equals(memberTYPE.STUDENT.toString())) {
-                    Member Studentmemberdata = new StudentMember(Integer.parseInt(memberID), memberName, memberEmail, memberType);
+                    Member Studentmemberdata = new StudentMember(Integer.parseInt(memberID), memberName, memberEmail, memberType, borrowedCount);
                     memberData.add(Studentmemberdata);
                 }
                 if (memberType.equals(memberTYPE.TEACHER.toString())) {
-                    Member Teachermemberdata = new TeacherMember(Integer.parseInt(memberID), memberName, memberEmail, memberType);
+                    Member Teachermemberdata = new TeacherMember(Integer.parseInt(memberID), memberName, memberEmail, memberType, borrowedCount);
                     memberData.add(Teachermemberdata);
                 }
             }
@@ -62,7 +66,7 @@ public class MemberRepository {
             updateFile.write("ID  NAME     EMAIL                TYPE    BORROW_STATUS");
             updateFile.newLine();
             for (Member member : memberData) {
-                String line = String.valueOf(member.getMemberID())+"|"+member.getMemberName()+"|"+member.getMemberEmail()+"|"+member.getMemberType().toString()+"|"+member.showborrowedBooksStatus();
+                String line = String.valueOf(member.getMemberID())+"|"+member.getMemberName()+"|"+member.getMemberEmail()+"|"+member.getMemberType().toString()+"|"+member.showborrowedBooksStatus();  
                 updateFile.write(line);
                 updateFile.newLine();
             } 

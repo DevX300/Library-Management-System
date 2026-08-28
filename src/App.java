@@ -1,21 +1,14 @@
-import service.*;
-
 import java.util.Scanner;
-
-import exception.BookNotAvailableException;
-import exception.BookNotFoundException;
-import exception.BorrowLimitExceededException;
-import exception.MemberNotFoundException;
-import repository.*;
+import util.FileManager;
+import exception.*;
+import service.*;
 
 public class App {
     public static void main(String[] args) {
         try {
-            BookRepository.loadBookFile();
-            MemberRepository.loadMemberFile();
-            TransactionRepository.loadTransactionFile();
+            FileManager.LoadFiles();
         } catch (Exception e) {
-            System.out.println("Error loading book file: " + e.getMessage());
+            System.out.println("Error loading files: " + e.getMessage());
         }
         System.out.println("===============================================================");
         System.out.println(":                   Library Management System                 :");
@@ -37,7 +30,6 @@ public class App {
         int choice;
         while (true){
             Scanner input = new Scanner(System.in);        
-
             System.out.print("Enter your choice: ");
             try {
                 choice = input.nextInt();
@@ -49,16 +41,18 @@ public class App {
             switch (choice){
                 case 1:
                     // Add a book
+                    System.out.println(".......Add a new Book.....");
+
                     System.out.print("Enter book title: ");
                     input.nextLine();
                     String bookTitle = input.nextLine();
+
                     System.out.print("Enter book Author Name: ");
-                    
                     String bookAuthor = input.nextLine();
+
                     System.out.print("Enter book category : ");
-                    // input.nextLine();
                     String bookCategory = input.nextLine();
-                    // input.next();
+                   
                     System.out.println("Adding book: " + bookTitle + ", Author: " + bookAuthor + ", Category: " + bookCategory);
                     BookService.addBook(bookTitle, bookAuthor, bookCategory);
                     break;
@@ -66,7 +60,6 @@ public class App {
                     // Remove a book
                     System.out.print("Enter book ID to remove: ");
                     int bookId = input.nextInt();
-                    // input.nextLine();
                     try{
                         BookService.removeBook(bookId);
                     }
@@ -77,6 +70,7 @@ public class App {
                 case 3:
                     // List books
                     try{
+                        System.out.println("Book List: ");
                         BookService.listBook();
                     }
                     catch(Exception e){
@@ -93,20 +87,18 @@ public class App {
                     System.out.println("5. Borrowed Books");
                     System.out.print("Enter your choice: ");
                     int searchChoice = input.nextInt();
-                    // input.nextLine();
-                    if(searchChoice == 4 || searchChoice == 5){
-                        BookService.searchBook(searchChoice);
-                        break;
-                    }
-                    BookService.searchBook(searchChoice);
+                    input.nextLine();
+                    BookService.searchBook(searchChoice, input);
                     break; 
                 case 5:
                     System.out.print("Enter Your Name: ");
                     input.nextLine();
                     String memberName = input.nextLine();
+
                     System.out.print("Enter Email: ");
                     String memberEmail = input.nextLine();
 
+                    System.out.println("Press:");
                     System.out.println("1. Student Member");
                     System.out.println("2. Teacher Member");
                     System.out.print("Choose MemberType: ");
@@ -124,21 +116,18 @@ public class App {
                         break;
                     }
                 case 6:
-                    try{
-                        MemberRepository.loadMemberFile();
-                        MemberService.listMembers();
-                    }
-                    catch(Exception e){
-                        System.out.println("Error Found: when loading member file"+e.getMessage());
-                    }
+                    System.out.println("Members List: ");
+                    MemberService.listMembers();
                     break;
                 case 7:
                     System.out.println(".....Borrow a book from the library....");
                     System.out.print("Enter Book Id: ");
                     input.nextLine();
                     int BookID = input.nextInt();
+
                     System.out.print("Enter your Member Id: ");
                     int memberID = input.nextInt();
+
                     try {
                         Library.borrowBooks(BookID, memberID);
                     } catch (BookNotFoundException | MemberNotFoundException | BookNotAvailableException
@@ -147,12 +136,14 @@ public class App {
                     }
                     break;
                 case 8:
-                    System.out.println(".....Return your Book....");
+                    System.out.println(".....Return your Book.....");
                     System.out.print("Enter Book Id: ");
                     input.nextLine();
                     int returnBookID = input.nextInt();
+
                     System.out.print("Enter your Member Id: ");
                     int returnMemberID = input.nextInt();
+                    
                     try {
                         Library.returnBooks(returnBookID, returnMemberID);
                     } catch (BookNotFoundException | BookNotAvailableException | MemberNotFoundException e) {
@@ -160,25 +151,18 @@ public class App {
                     }
                     break;
                 case 9:
-                    System.out.println("Transaction History");
+                    System.out.println("Transaction History: ");
                     TransactionService.transactionHistory();
                     break;
                 case 10:
-                    BookRepository.saveBookFile();
-                    MemberRepository.saveMemberFile();
-                    TransactionRepository.saveTransactionFile();
+                    FileManager.SaveFiles();
                     break;
                 case 11:
-                    try {
-                        BookRepository.loadBookFile();
-                        MemberRepository.loadMemberFile();
-                        TransactionRepository.loadTransactionFile();
-                    } catch (Exception e) {
-                        System.out.println("Failed to load data.");
-                    }
+                    FileManager.LoadFiles();
                     break;
                 case 0:
                     // Exit
+                    FileManager.SaveFiles();
                     System.out.println("App Closed Successfully");
                     input.close();
                     System.exit(0);

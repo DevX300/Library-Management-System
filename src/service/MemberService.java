@@ -16,12 +16,12 @@ public class MemberService {
         String memberType=null;
         if(memberTypeInitialize==1){
             memberType=memberTYPE.STUDENT.toString();
-            MemberRepository.memberData.add(new StudentMember(memberID, memberName, memberEmail, memberType));
+            MemberRepository.memberData.add(new StudentMember(memberID, memberName, memberEmail, memberType, 0));
         } 
         
         if(memberTypeInitialize==2){
             memberType=memberTYPE.TEACHER.toString();
-            MemberRepository.memberData.add(new TeacherMember(memberID, memberName, memberEmail, memberType));
+            MemberRepository.memberData.add(new TeacherMember(memberID, memberName, memberEmail, memberType, 0));
         } 
         
         // Save the book to the repository

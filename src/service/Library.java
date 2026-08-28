@@ -3,6 +3,7 @@ package service;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import exception.BookNotAvailableException;
 import exception.BookNotFoundException;
@@ -19,6 +20,7 @@ import model.BookStatus;
 import repository.BookRepository;
 import repository.MemberRepository;
 import repository.TransactionRepository;
+import util.FileManager;
 import util.Idgenerator;
 
 public class Library {
@@ -51,12 +53,12 @@ public class Library {
                                 if (members.getMemberID()==memberId) {
                                         memberExists=true;
                                         if (members.getMemberType().equals(memberTYPE.STUDENT)) {
-                                                if (members.getCount()<3) {
+                                                if (members.getBorrowedCount()<3) {
                                                         memberBorrowLimitCheck=true;
                                                 }
                                         }
                                         if (members.getMemberType().equals(memberTYPE.TEACHER)) {
-                                                if (members.getCount()<10){
+                                                if (members.getBorrowedCount()<10){
                                                         memberBorrowLimitCheck=true;
                                                 }
                                         }
@@ -139,6 +141,7 @@ public class Library {
                 boolean bookExists=false;
                 boolean memberExists=false;
                 boolean bookStatusCheck=false;
+                boolean isBorrowTransaction = false;
                 boolean isReturn=false;
                 
                 try {
@@ -166,7 +169,21 @@ public class Library {
                                 throw new MemberNotFoundException("No such Member found with this ID.");
                         }
 
-                        if(bookExists && bookStatusCheck && memberExists){
+                        Transaction borrowTransaction = TransactionRepository.transactionData.stream()
+                        .filter(transactionBorrow -> transactionBorrow.getBookID() == bookId
+                                && transactionBorrow.getMemberID() == memberId
+                                && transactionBorrow.getTransactionType() == TransactionType.BORROW
+                                && transactionBorrow.getReturnDate() == null)
+                        .max(Comparator.comparing(Transaction::getBorrowDate))
+                        .orElse(null);
+
+                        if (borrowTransaction != null) {
+                                isBorrowTransaction =true;
+                        } else {
+                                throw new IllegalStateException("This member did not borrow this book.");
+                        }
+
+                        if(bookExists && bookStatusCheck && memberExists && isBorrowTransaction){
                                 isReturn=true;
                         }
                         //if everything check return the book and print message
@@ -175,13 +192,15 @@ public class Library {
                                 for (Book book : bookData) {
                                         if (book.getBookID()==bookId) {
                                                 LocalDate returnDate = LocalDate.now();
-                                                LocalDate borrowDate = null;
+                                                LocalDate borrowDate;
                                                 book.setBookStatus(BookStatus.AVAILABLE.toString());
                                                 for (Member member : MemberRepository.memberData) {
                                                         if (member.getMemberID()==memberId) {
-                                                                borrowDate =  member.getBorrowDate(bookId);
+                                                                borrowDate = borrowTransaction.getBorrowDate();
+                                                                //sets removes bookId and borrowDate
                                                                 member.setReturnBooks(bookId);
                                                                 System.out.println(borrowDate);
+
                                                                 Idgenerator generateID = new Idgenerator();
                                                                 
                                                                 Transaction bookReturnTransaction = new Transaction(
@@ -193,22 +212,14 @@ public class Library {
                                                                              TransactionType.RETURN,
                                                                               getLateFee(borrowDate,returnDate, member.getMemberType()));
                                                                 TransactionRepository.transactionData.add(bookReturnTransaction);
+                                                                System.out.println("The book with ID:"+ bookId + " has been returned.");
+                                                                System.out.println("Return Date: " + returnDate );
+                                                                System.out.println("Borrow date: " + borrowDate);
                                                         }
                                                 }
                                                 //Save Files
-                                                BookRepository.saveBookFile();
-                                                MemberRepository.saveMemberFile();
-                                                TransactionRepository.saveTransactionFile();
-                                                //Show borrow mesage status
-                                                System.out.println("The book with ID:"+ bookId + " has been returned.");
-                                                System.out.println("Return Date: " + returnDate );
-                                                for (Member member : MemberRepository.memberData) {
-                                                        if (member.getMemberID()==memberId) {
-                                                                        System.out.println("Borrow date: " + borrowDate);
-                                                        }
-                                                }
+                                                FileManager.SaveFiles();
                                         }
-
                                 }
                         }
                 } catch (BookNotFoundException|BookNotAvailableException|MemberNotFoundException e) {

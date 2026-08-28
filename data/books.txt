@@ -1,2 +1,3 @@
 ID  |  TITLE   |   AUTHOR   |   CATEGORY   |  STATUS
-1|Clean Code|Martin|Programming|AVAILABLE
+1|Clean Code|martin|Programming|AVAILABLE
+2|Harry Porter|JK Rowling|Fantasy|AVAILABLE

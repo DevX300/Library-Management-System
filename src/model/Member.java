@@ -9,19 +9,20 @@ public abstract class Member {
     private String memberName;
     private String memberEmail;
     private memberTYPE memberType;
-    
-    private int count=0;
+    private int borrowedCount;
 
 
     public Member(int memberID, 
         String memberName, 
         String memberEmail,  
-        String memberType) 
+        String memberType,
+        int borrowCount) 
     {
         this.memberID=memberID;
         this.memberName=memberName;
         this.memberEmail=memberEmail;
         this.memberType=memberTYPE.valueOf(memberType);
+        this.borrowedCount=borrowCount;
     }
 
     public abstract String showborrowedBooksStatus();
@@ -45,9 +46,10 @@ public abstract class Member {
         this.memberType = memberTYPE.valueOf(memberType);
     }
 
-    public void setCount(int count){
-        this.count=count;
+    public void setBorrowedCount(int count){
+        this.borrowedCount=count;
     }
+    
     
     // Getters
     public int getMemberID() {
@@ -66,7 +68,7 @@ public abstract class Member {
         return memberType;
     }
 
-    public int getCount(){
-        return count;
+    public int getBorrowedCount(){
+        return borrowedCount;
     }
 }

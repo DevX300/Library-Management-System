@@ -3,6 +3,12 @@ package util;
 import java.io.*;
 import java.nio.file.*;
 
+import exception.BookNotFoundException;
+import exception.MemberNotFoundException;
+import repository.BookRepository;
+import repository.MemberRepository;
+import repository.TransactionRepository;
+
 public class FileManager {
     
     private FileManager() {}
@@ -61,4 +67,27 @@ public class FileManager {
         }
         return file;
     }
+
+
+    public static void LoadFiles(){
+        try {
+            BookRepository.loadBookFile();
+            MemberRepository.loadMemberFile();
+            TransactionRepository.loadTransactionFile();
+
+        } catch (BookNotFoundException| MemberNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void SaveFiles(){
+        try {
+            BookRepository.saveBookFile();
+            MemberRepository.saveMemberFile();
+            TransactionRepository.saveTransactionFile();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

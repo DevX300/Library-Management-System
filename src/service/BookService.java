@@ -7,7 +7,16 @@ import exception.*;
 import java.util.Scanner;
 public class BookService {
     
-    public static void addBook(String bookTitle, String bookAuthor,String bookCategory) {
+    public static void addBook(String bookTitle, String bookAuthor,String bookCategory) throws InputValidator{
+        if (bookTitle == null || bookTitle.trim().isEmpty()) {
+            throw new InputValidator("Book title cannot be empty.");
+        }
+        if (bookAuthor == null || bookAuthor.trim().isEmpty()) {
+            throw new InputValidator("Book author cannot be empty.");
+        }
+        if (bookCategory == null || bookCategory.trim().isEmpty()) {
+            throw new InputValidator("Book category cannot be empty.");
+        }
         Idgenerator idGenerator = new Idgenerator();
         int bookID = idGenerator.generateBookID();
         // adds a new book to the library
@@ -110,7 +119,7 @@ public class BookService {
             if(Library.bookData.isEmpty()){
                 throw new BookNotFoundException("No books available in the library.");
             }
-            System.out.println("searchnamemethod==" + searchValue);
+            // System.out.println("searchnamemethod==" + searchValue);
 
             Library.bookData
             .stream()

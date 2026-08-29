@@ -1,11 +1,13 @@
 import java.util.Scanner;
 import util.FileManager;
+import util.InputValidator;
 import exception.*;
 import service.*;
 
 public class App {
     public static void main(String[] args) {
         try {
+            System.out.println("..............Welcome............");
             FileManager.LoadFiles();
         } catch (Exception e) {
             System.out.println("Error loading files: " + e.getMessage());
@@ -35,7 +37,6 @@ public class App {
                 choice = input.nextInt();
             } catch (Exception e) {
                 System.out.println("Invalid input. Please enter a number.");
-                input.nextInt(); 
                 continue; 
             }
             switch (choice){
@@ -53,18 +54,25 @@ public class App {
                     System.out.print("Enter book category : ");
                     String bookCategory = input.nextLine();
                    
-                    System.out.println("Adding book: " + bookTitle + ", Author: " + bookAuthor + ", Category: " + bookCategory);
-                    BookService.addBook(bookTitle, bookAuthor, bookCategory);
+                    try {
+                        BookService.addBook(bookTitle, bookAuthor, bookCategory);
+                        System.out.println("Adding book: " + bookTitle + ", Author: " + bookAuthor + ", Category: " + bookCategory);
+                    } catch (InputValidator e) {
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case 2:
                     // Remove a book
                     System.out.print("Enter book ID to remove: ");
-                    int bookId = input.nextInt();
-                    try{
-                        BookService.removeBook(bookId);
-                    }
-                    catch(Exception e){
-                        System.out.println(e.getMessage());
+                    try {
+                        int bookId = input.nextInt();
+                        try {
+                            BookService.removeBook(bookId);
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Invalid input. Please enter a number.");
                     }
                     break;
                 case 3:
@@ -106,9 +114,13 @@ public class App {
                     
                     int memberType = input.nextInt();
                     if(memberType==1||memberType==2){
-                        if (memberType==1)  System.out.println("Adding new Student: " + memberName + ", Email: " + memberEmail);
-                        if (memberType==2)  System.out.println("Adding new Teacher: " + memberName + ", Email: " + memberEmail);
-                        MemberService.addMember(memberName, memberEmail, memberType);
+                        try {
+                            MemberService.addMember(memberName, memberEmail, memberType);
+                            if (memberType==1)  System.out.println("Adding new Student: " + memberName + ", Email: " + memberEmail);
+                            if (memberType==2)  System.out.println("Adding new Teacher: " + memberName + ", Email: " + memberEmail);
+                        } catch (InputValidator e) {
+                            System.out.println(e.getMessage());
+                        }
                         break;
                     }
                     else{
@@ -122,32 +134,39 @@ public class App {
                 case 7:
                     System.out.println(".....Borrow a book from the library....");
                     System.out.print("Enter Book Id: ");
-                    input.nextLine();
-                    int BookID = input.nextInt();
-
-                    System.out.print("Enter your Member Id: ");
-                    int memberID = input.nextInt();
 
                     try {
-                        Library.borrowBooks(BookID, memberID);
-                    } catch (BookNotFoundException | MemberNotFoundException | BookNotAvailableException
-                            | BorrowLimitExceededException e) {
-                        System.out.println("Error: " + e.getMessage());
+                        input.nextLine();
+                        int BookID = input.nextInt();
+                        System.out.print("Enter your Member Id: ");
+                        int memberID = input.nextInt();
+                        try {
+                            Library.borrowBooks(BookID, memberID);
+                        } catch (BookNotFoundException | MemberNotFoundException | BookNotAvailableException
+                                | BorrowLimitExceededException e) {
+                            System.out.println("Error: " + e.getMessage());
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Invalid input. Please enter a number.");
                     }
                     break;
                 case 8:
                     System.out.println(".....Return your Book.....");
                     System.out.print("Enter Book Id: ");
-                    input.nextLine();
-                    int returnBookID = input.nextInt();
-
-                    System.out.print("Enter your Member Id: ");
-                    int returnMemberID = input.nextInt();
-                    
                     try {
-                        Library.returnBooks(returnBookID, returnMemberID);
-                    } catch (BookNotFoundException | BookNotAvailableException | MemberNotFoundException e) {
-                        System.out.println("Error: "+ e.getMessage());
+                        input.nextLine();
+                        int returnBookID = input.nextInt();
+    
+                        System.out.print("Enter your Member Id: ");
+                        int returnMemberID = input.nextInt();
+                        
+                        try {
+                            Library.returnBooks(returnBookID, returnMemberID);
+                        } catch (BookNotFoundException | BookNotAvailableException | MemberNotFoundException e) {
+                            System.out.println("Error: "+ e.getMessage());
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Invalid input. Please enter a number.");
                     }
                     break;
                 case 9:

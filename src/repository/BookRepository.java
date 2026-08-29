@@ -3,7 +3,6 @@ package repository;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-// import java.util.ArrayList;
 import java.util.List;
 
 import exception.BookNotFoundException;
@@ -24,7 +23,7 @@ public class BookRepository {
                 return;
             }
             if (lines.isEmpty()) {
-                throw new BookNotFoundException("No books found in the file.");                
+                throw new BookNotFoundException("Add Books.");                
             }
             for(int i = 1; i < lines.size(); i++) {
                 String line = lines.get(i);
@@ -43,8 +42,7 @@ public class BookRepository {
             System.out.println("Error reading file: " + e.getMessage());
         }
         catch (BookNotFoundException e) {
-            System.out.println("File is empty: " + e.getMessage());
-            System.out.println("Add a new Book");
+            System.out.println(e.getMessage());
         }
         count=false;
     }

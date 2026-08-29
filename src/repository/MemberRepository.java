@@ -26,7 +26,7 @@ public class MemberRepository {
                 return;
             }
             if (lines.isEmpty()) {
-                throw new MemberNotFoundException("No members found in the file.");                
+                throw new MemberNotFoundException("Add Members.");                
             }
             for(int i = 1; i < lines.size(); i++) {
                 String line = lines.get(i);
@@ -53,8 +53,7 @@ public class MemberRepository {
             System.out.println("Error reading file: " + e.getMessage());
         }
         catch (MemberNotFoundException e) {
-            System.out.println("File is empty: " + e.getMessage());
-            System.out.println("Add a new member");
+            System.out.println(e.getMessage());
         }
         count=false;
     }

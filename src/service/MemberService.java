@@ -4,12 +4,21 @@ import exception.MemberNotFoundException;
 import model.*;
 import repository.MemberRepository;
 import util.Idgenerator;
+import util.InputValidator;
 
 public class MemberService {
 
     private MemberService (){};
 
-    public static void addMember(String memberName, String memberEmail,int memberTypeInitialize) {
+    public static void addMember(String memberName, String memberEmail,int memberTypeInitialize) throws InputValidator{
+           if (memberName == null || memberName.trim().isEmpty()) {
+                throw new InputValidator("Member name cannot be empty.");
+            }
+            if (memberEmail == null || memberEmail.trim().isEmpty()) {
+                throw new InputValidator("Member email cannot be empty.");
+            }
+
+
         Idgenerator idGenerator = new Idgenerator();
         int memberID = idGenerator.generateMemberID();
         

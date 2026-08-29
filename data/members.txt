@@ -1,2 +1,0 @@
-ID  NAME     EMAIL                TYPE    BORROW_STATUS
-1|red|red@teacher.com|TEACHER|1/10

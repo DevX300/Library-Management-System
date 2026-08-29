@@ -38,13 +38,14 @@ public class BookService {
                 listBook();
                 return;
             }
-            try{
-                if(book.getBookID() == bookID && book.getBookStatus() == model.BookStatus.BORROWED){
+            if(book.getBookID() == bookID && book.getBookStatus() == model.BookStatus.BORROWED){
+                notFound=false;
+                try{
                     throw new BookNotAvailableException("Book with ID " + bookID + " is currently borrowed and cannot be removed.");
                 }
-            }
-            catch(BookNotAvailableException e){
-                System.out.println(e.getMessage());
+                catch(BookNotAvailableException e){
+                    System.out.println(e.getMessage());
+                }
             }
         }
         try{

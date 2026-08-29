@@ -73,7 +73,6 @@ public class MemberRepository {
         } catch (IOException e) {
             System.out.println("Error updating file: " + e.getMessage());
         }
-
     }
 
 
